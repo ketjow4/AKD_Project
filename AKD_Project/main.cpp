@@ -20,14 +20,14 @@
 //		   Klasa powinna także umożliwiać podpięcie przez użytkownika własnego paska postępu
 //		   (np.poprzez odziedziczenie po jakiejś klasie bazowej) i własnej obsługi błędów.
 
+#include "ZipWrapper.h"
 
-
-using namespace std;
-
-
-
-
-int main(int ac, char* av[])
+int main(int argc, char **argv)
 {
-	return 0;
+	auto zip = ZipWrapper("foo2.txt");
+
+	if(zip.CompressFile(nullptr, stdout))
+		std::cout << "Kompresja zakończona sukcesem" << std::endl;
+	else
+		std::cout << "Kompresja nieudana" << std::endl;
 }
