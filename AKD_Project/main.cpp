@@ -21,9 +21,13 @@
 //		   (np.poprzez odziedziczenie po jakiejś klasie bazowej) i własnej obsługi błędów.
 
 #include "ZipWrapper.h"
+#include "Bzip2.h"
 
 int main(int argc, char **argv)
 {
+	auto b = Bzip2();
+	//b.example();
+
 	auto zip = ZipWrapper("foo2.txt");			//test.txt.z  //foo2.txt
 
 	if(zip.CompressFile(nullptr, stdout))
