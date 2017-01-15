@@ -24,10 +24,16 @@
 
 int main(int argc, char **argv)
 {
-	auto zip = ZipWrapper("foo2.txt");
+	auto zip = ZipWrapper("foo2.txt");			//test.txt.z  //foo2.txt
 
 	if(zip.CompressFile(nullptr, stdout))
 		std::cout << "Kompresja zakończona sukcesem" << std::endl;
 	else
 		std::cout << "Kompresja nieudana" << std::endl;
+
+	/*if(zip.DeCompressFromStrandard())
+		std::cout << "Dekompresja zakończona sukcesem" << std::endl;
+	else
+		std::cout << "dekompresja nieudana" << std::endl;*/
+
 }
