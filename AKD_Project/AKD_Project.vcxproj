@@ -170,11 +170,30 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ioapi_mem.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="minizip\ioapi.c" />
+    <ClCompile Include="minizip\iowin32.c" />
+    <ClCompile Include="minizip\miniunz.c" />
+    <ClCompile Include="minizip\minizip.c" />
+    <ClCompile Include="minizip\mztools.c" />
+    <ClCompile Include="minizip\unzip.c" />
+    <ClCompile Include="minizip\zip.c" />
+    <ClCompile Include="unzipper.cpp" />
+    <ClCompile Include="zipper.cpp" />
     <ClCompile Include="ZipWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bzip2.h" />
+    <ClInclude Include="ioapi_mem.h" />
+    <ClInclude Include="minizip\crypt.h" />
+    <ClInclude Include="minizip\ioapi.h" />
+    <ClInclude Include="minizip\iowin32.h" />
+    <ClInclude Include="minizip\mztools.h" />
+    <ClInclude Include="minizip\unzip.h" />
+    <ClInclude Include="minizip\zip.h" />
+    <ClInclude Include="unzipper.h" />
+    <ClInclude Include="zipper.h" />
     <ClInclude Include="ZipWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

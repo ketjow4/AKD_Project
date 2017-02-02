@@ -1,7 +1,5 @@
 #include "ZipWrapper.h"
 
-
-
 ZipWrapper::ZipWrapper()
 {
 }
