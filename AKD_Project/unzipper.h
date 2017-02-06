@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-namespace ziputils
+namespace akdzlib
 {
 	class unzipper
 	{

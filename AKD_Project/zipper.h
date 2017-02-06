@@ -6,7 +6,7 @@
 #include "minizip/zip.h"
 #include "minizip/ioapi.h"
 
-namespace ziputils
+namespace akdzlib
 {
 	class zipper
 	{

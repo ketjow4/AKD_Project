@@ -22,18 +22,33 @@
 
 #include "ZipWrapper.h"
 #include "Bzip2.h"
+#include "zipper.h"
+#include <fstream>
 
 int main(int argc, char **argv)
 {
-	auto b = Bzip2();
-	//b.example();
+	auto zip = akdzlib::zipper();
 
-	auto zip = ZipWrapper("foo2.txt");			//test.txt.z  //foo2.txt
+	zip.open("mojZip.zip");
 
-	if(zip.CompressFile(nullptr, stdout))
-		std::cout << "Kompresja zakończona sukcesem" << std::endl;
-	else
-		std::cout << "Kompresja nieudana" << std::endl;
+	std::ifstream ifs;
+
+	ifs.open("foo2.txt", std::ifstream::in);
+	zip.addEntry("foo2.txt");
+	zip << ifs;
+
+	zip.close();
+
+
+	//auto b = Bzip2();
+	////b.example();
+
+	//auto zip = ZipWrapper("foo2.txt");			//test.txt.z  //foo2.txt
+
+	//if(zip.CompressFile(nullptr, stdout))
+	//	std::cout << "Kompresja zakończona sukcesem" << std::endl;
+	//else
+	//	std::cout << "Kompresja nieudana" << std::endl;
 
 	/*if(zip.DeCompressFromStrandard())
 		std::cout << "Dekompresja zakończona sukcesem" << std::endl;

@@ -3,9 +3,8 @@
 #include <algorithm>
 #include <sstream>
 
-namespace ziputils
+namespace akdzlib
 {
-	// Default constructor
 	unzipper::unzipper() :
 		zipFile_( 0 ), 
 		entryOpen_( false )
@@ -19,11 +18,7 @@ namespace ziputils
 	}
 
 	// open a zip file.
-	// param:
-	// 		filename	path and the filename of the zip file to open
-	//
-	// return:
-	// 		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool unzipper::open( const char* filename ) 
 	{
 		close();
@@ -51,8 +46,7 @@ namespace ziputils
 	}
 
 	// Check if a zipfile is open.
-	// return:
-	//		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool unzipper::isOpen()
 	{
 		return zipFile_ != 0;
@@ -71,8 +65,7 @@ namespace ziputils
 	}
 
 	// open an existing zip entry.
-	// return:
-	//		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool unzipper::openEntry( const char* filename )
 	{
 		if ( isOpen() )
@@ -99,16 +92,14 @@ namespace ziputils
 	}
 
 	// Check if there is a currently open zip entry.
-	// return:
-	//		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool unzipper::isOpenEntry()
 	{
 		return entryOpen_;
 	}
 
 	// Get the zip entry uncompressed size.
-	// return:
-	//		zip entry uncompressed size
+	// return: zip entry uncompressed size
 	unsigned int unzipper::getEntrySize()
 	{
 		if ( entryOpen_ )
@@ -126,7 +117,6 @@ namespace ziputils
 		return 0;
 	}
 
-	// Private method used to build a list of files and folders.
 	void unzipper::readEntries()
 	{
 		files_.clear();

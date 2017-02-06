@@ -4,19 +4,16 @@
 #include <sstream>
 #include <time.h>
 
-namespace ziputils
+namespace akdzlib
 {
 	const unsigned int BUFSIZE = 2048;
 
-	
-	// Default constructor
 	zipper::zipper() :
 		zipFile_( 0 ), 
 		entryOpen_( false )
 	{
 	}
 
-	// Default destructor
 	zipper::~zipper(void)
 	{
 		close();
@@ -26,8 +23,7 @@ namespace ziputils
 	// param:
 	//		filename	path and the filename of the zip file to open
 	//		append		set true to append the zip file
-	// return:
-	//		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool zipper::open( const char* filename, bool append ) 
 	{
 		close();
@@ -48,8 +44,7 @@ namespace ziputils
 	}
 
 	// Check if a zipfile is open.
-	// return:
-	//		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool zipper::isOpen()
 	{
 		return zipFile_ != 0;
@@ -57,8 +52,7 @@ namespace ziputils
 
 	// Create a zip entry; either file or folder. Folder has to 
 	// end with a slash or backslash.
-	// return:
-	//		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool zipper::addEntry( const char* filename )
 	{
 		if ( isOpen() )
@@ -93,8 +87,7 @@ namespace ziputils
 	}
 
 	// Check if there is a currently open file zip entry.
-	// return:
-	//		true if open, false otherwise
+	// return: true if open, false otherwise
 	bool zipper::isOpenEntry()
 	{
 		return entryOpen_;
@@ -129,8 +122,7 @@ namespace ziputils
 	}
 
 	// Fill the zip time structure
-	// param:
-	//		tmZip	time structure to be filled
+	// param: tmZip	time structure to be filled
 	void zipper::getTime(tm_zip& tmZip)
 	{
 		time_t rawtime;
