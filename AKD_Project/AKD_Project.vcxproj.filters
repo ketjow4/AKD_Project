@@ -21,9 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZipWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="minizip\ioapi.c">
       <Filter>minizip</Filter>
     </ClCompile>
@@ -54,11 +51,11 @@
     <ClCompile Include="zipper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ZlibWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ZipWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Bzip2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zipper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZlibWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

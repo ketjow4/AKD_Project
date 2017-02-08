@@ -1,21 +1,21 @@
-#include "ZipWrapper.h"
+#include "ZlibWrapper.h"
 
-ZipWrapper::ZipWrapper()
+ZlibWrapper::ZlibWrapper()
 {
 }
 
-ZipWrapper::ZipWrapper(char* path)
+ZlibWrapper::ZlibWrapper(char* path)
 {
 	_sourceFile = fopen(path, "r");
 	if (_sourceFile == NULL)
 		std::cout << "Error opening file" << std::endl;
 }
 
-ZipWrapper::~ZipWrapper()
+ZlibWrapper::~ZlibWrapper()
 {
 }
 
-int ZipWrapper::Compress(FILE* source, FILE* dest, int level)
+int ZlibWrapper::Compress(FILE* source, FILE* dest, int level)
 {
 	int ret, flush;
 	unsigned have;
@@ -65,7 +65,7 @@ int ZipWrapper::Compress(FILE* source, FILE* dest, int level)
 	return Z_OK;
 }
 
-int ZipWrapper::DeCompress(FILE* source, FILE* dest)
+int ZlibWrapper::DeCompress(FILE* source, FILE* dest)
 {
 	int ret;
 	unsigned have;
@@ -123,19 +123,19 @@ int ZipWrapper::DeCompress(FILE* source, FILE* dest)
 	return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
 }
 
-bool ZipWrapper::CompressFromStrandard()
+bool ZlibWrapper::CompressFromStrandard()
 {
 	SET_BINARY_MODE(stdin);
 	SET_BINARY_MODE(stdout);
 	return (Compress(stdin, stdout, Z_DEFAULT_COMPRESSION) == Z_OK);
 }
 
-bool ZipWrapper::DeCompressFromStrandard()
+bool ZlibWrapper::DeCompressFromStrandard()
 {
 	return (DeCompress(stdin, stdout) == Z_OK);
 }
 
-bool ZipWrapper::CompressFile(FILE* source, FILE* dest)
+bool ZlibWrapper::CompressFile(FILE* source, FILE* dest)
 {
 	if (source == nullptr)
 		source = _sourceFile;

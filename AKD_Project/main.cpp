@@ -20,26 +20,35 @@
 //		   Klasa powinna także umożliwiać podpięcie przez użytkownika własnego paska postępu
 //		   (np.poprzez odziedziczenie po jakiejś klasie bazowej) i własnej obsługi błędów.
 
-#include "ZipWrapper.h"
+#include "ZlibWrapper.h"
 #include "Bzip2.h"
 #include "zipper.h"
 #include <fstream>
+#include "unzipper.h"
 
 int main(int argc, char **argv)
 {
 	auto zip = akdzlib::zipper();
 
-	zip.open("mojZip.zip");
+	zip.open("mojZip2.zip");
 
-	std::ifstream ifs;
+	/*std::ifstream ifs;
 
 	ifs.open("foo2.txt", std::ifstream::in);
 	zip.addEntry("foo2.txt");
-	zip << ifs;
+	zip << ifs;*/
 
+	
+
+	auto unzip = akdzlib::unzipper();
+
+
+	unzip.open("mojZip.zip");
+	unzip.openEntry("foo2.txt");
+	unzip.getEntrySize();
+
+	unzip.close();
 	zip.close();
-
-
 	//auto b = Bzip2();
 	////b.example();
 

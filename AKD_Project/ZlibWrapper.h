@@ -18,12 +18,12 @@
 #endif
 
 
-class ZipWrapper
+class ZlibWrapper
 {
 public:
-	ZipWrapper();
-	ZipWrapper(char * path);
-	~ZipWrapper();
+	ZlibWrapper();
+	ZlibWrapper(char * path);
+	~ZlibWrapper();
 
 	bool CompressFromStrandard();
 	bool DeCompressFromStrandard();

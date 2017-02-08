@@ -181,7 +181,7 @@
     <ClCompile Include="minizip\zip.c" />
     <ClCompile Include="unzipper.cpp" />
     <ClCompile Include="zipper.cpp" />
-    <ClCompile Include="ZipWrapper.cpp" />
+    <ClCompile Include="ZlibWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bzip2.h" />
@@ -194,7 +194,7 @@
     <ClInclude Include="minizip\zip.h" />
     <ClInclude Include="unzipper.h" />
     <ClInclude Include="zipper.h" />
-    <ClInclude Include="ZipWrapper.h" />
+    <ClInclude Include="ZlibWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
