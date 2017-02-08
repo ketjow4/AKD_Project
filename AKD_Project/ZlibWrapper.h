@@ -1,37 +1,27 @@
 #pragma once
-#define CHUNK 16384
 
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
-#define ZLIB_WINAPI
-#include <zlib.h>
-#include <string>
-#include <iostream>
-
-#if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)
-#  include <fcntl.h>
-#  include <io.h>
-#  define SET_BINARY_MODE(file) setmode(fileno(file), O_BINARY)
-#else
-#  define SET_BINARY_MODE(file)
-#endif
-
+#include "zipper.h"
+#include "unzipper.h"
+#include <list>
+#include <fstream>
 
 class ZlibWrapper
 {
 public:
 	ZlibWrapper();
-	ZlibWrapper(char * path);
 	~ZlibWrapper();
-
-	bool CompressFromStrandard();
-	bool DeCompressFromStrandard();
-	bool CompressFile(FILE *source, FILE *dest);
+	void Open(char* archiveName);
+	void Open(char* archiveName, bool forceNew);
+	void Close();
+	std::vector<std::string> ListContents();
+	unz_file_info64 GetHeader(const char* fileName);
+	void AddFile(const char* fileName);
+	std::ofstream GetFile(const char*fileName);
 private:
-	int Compress(FILE *source, FILE *dest, int level);
-	int DeCompress(FILE *source, FILE *dest);
+	akdzlib::zipper zipArchive;
+	akdzlib::unzipper unzipArchive;
+	bool _isArchiveOpen;
 
-	FILE *_sourceFile;
+	static bool fileExist(const std::string& name);
 };
 

@@ -6,8 +6,8 @@
 namespace akdzlib
 {
 	unzipper::unzipper() :
-		zipFile_( 0 ), 
-		entryOpen_( false )
+		zipFile_(0),
+		entryOpen_(false)
 	{
 	}
 
@@ -19,11 +19,11 @@ namespace akdzlib
 
 	// open a zip file.
 	// return: true if open, false otherwise
-	bool unzipper::open( const char* filename ) 
+	bool unzipper::open(const char* filename)
 	{
 		close();
-		zipFile_ = unzOpen64( filename );
-		if ( zipFile_ )
+		zipFile_ = unzOpen64(filename);
+		if (zipFile_)
 		{
 			readEntries();
 		}
@@ -34,13 +34,13 @@ namespace akdzlib
 	// Close the zip file
 	void unzipper::close()
 	{
-		if ( zipFile_ )
+		if (zipFile_)
 		{
 			files_.clear();
 			folders_.clear();
 
 			closeEntry();
-			unzClose( zipFile_ );
+			unzClose(zipFile_);
 			zipFile_ = 0;
 		}
 	}
@@ -66,15 +66,15 @@ namespace akdzlib
 
 	// open an existing zip entry.
 	// return: true if open, false otherwise
-	bool unzipper::openEntry( const char* filename )
+	bool unzipper::openEntry(const char* filename)
 	{
-		if ( isOpen() )
+		if (isOpen())
 		{
 			closeEntry();
-			int err = unzLocateFile( zipFile_, filename, 0 );
-			if ( err == UNZ_OK )
+			int err = unzLocateFile(zipFile_, filename, 0);
+			if (err == UNZ_OK)
 			{
-				err = unzOpenCurrentFile( zipFile_ );
+				err = unzOpenCurrentFile(zipFile_);
 				entryOpen_ = (err == UNZ_OK);
 			}
 		}
@@ -84,9 +84,9 @@ namespace akdzlib
 	// Close the currently open zip entry.
 	void unzipper::closeEntry()
 	{
-		if ( entryOpen_ )
+		if (entryOpen_)
 		{
-			unzCloseCurrentFile( zipFile_ );
+			unzCloseCurrentFile(zipFile_);
 			entryOpen_ = false;
 		}
 	}
@@ -102,13 +102,13 @@ namespace akdzlib
 	// return: zip entry uncompressed size
 	unsigned int unzipper::getEntrySize()
 	{
-		if ( entryOpen_ )
+		if (entryOpen_)
 		{
 			unz_file_info64 oFileInfo;
 
-			int err = unzGetCurrentFileInfo64( zipFile_, &oFileInfo, 0, 0, 0, 0, 0, 0);
+			int err = unzGetCurrentFileInfo64(zipFile_, &oFileInfo, 0, 0, 0, 0, 0, 0);
 
-			if ( err == UNZ_OK )
+			if (err == UNZ_OK)
 			{
 				return (unsigned int)oFileInfo.uncompressed_size;
 			}
@@ -117,27 +117,42 @@ namespace akdzlib
 		return 0;
 	}
 
+	unz_file_info64 unzipper::getEntryHeader() const
+	{
+		unz_file_info64 oFileInfo;
+		if (entryOpen_)
+		{
+			int err = unzGetCurrentFileInfo64(zipFile_, &oFileInfo, 0, 0, 0, 0, 0, 0);
+
+			if (err == UNZ_OK)
+			{
+				return oFileInfo;
+			}
+		}
+		return oFileInfo;
+	}
+
 	void unzipper::readEntries()
 	{
 		files_.clear();
 		folders_.clear();
 
-		if ( isOpen() )
+		if (isOpen())
 		{
 			unz_global_info64 oGlobalInfo;
-			int err = unzGetGlobalInfo64( zipFile_, &oGlobalInfo );
-			for ( unsigned long i=0; 
-				i < oGlobalInfo.number_entry && err == UNZ_OK; i++ )
+			int err = unzGetGlobalInfo64(zipFile_, &oGlobalInfo);
+			for (unsigned long i = 0;
+				i < oGlobalInfo.number_entry && err == UNZ_OK; i++)
 			{
 				char filename[FILENAME_MAX];
 				unz_file_info64 oFileInfo;
 
-				err = unzGetCurrentFileInfo64( zipFile_, &oFileInfo, filename, 
+				err = unzGetCurrentFileInfo64(zipFile_, &oFileInfo, filename,
 					sizeof(filename), NULL, 0, NULL, 0);
-				if ( err == UNZ_OK )
+				if (err == UNZ_OK)
 				{
-					char nLast = filename[oFileInfo.size_filename-1];
-					if ( nLast =='/' || nLast == '\\' )
+					char nLast = filename[oFileInfo.size_filename - 1];
+					if (nLast == '/' || nLast == '\\')
 					{
 						folders_.push_back(filename);
 					}
@@ -153,19 +168,19 @@ namespace akdzlib
 	}
 
 	// Dump the currently open entry to the uotput stream
-	unzipper& unzipper::operator>>( std::ostream& os )
+	unzipper& unzipper::operator >> (std::ostream& os)
 	{
-		if ( isOpenEntry() )
+		if (isOpenEntry())
 		{
 			unsigned int size = getEntrySize();
 			char* buf = new char[size];
-			size = unzReadCurrentFile( zipFile_, buf, size );
-			if ( size > 0 )
+			size = unzReadCurrentFile(zipFile_, buf, size);
+			if (size > 0)
 			{
-				os.write( buf, size );
+				os.write(buf, size);
 				os.flush();
 			}
-			delete [] buf;
+			delete[] buf;
 		}
 		return *this;
 	}

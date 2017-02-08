@@ -22,46 +22,44 @@
 
 #include "ZlibWrapper.h"
 #include "Bzip2.h"
-#include "zipper.h"
 #include <fstream>
-#include "unzipper.h"
+
 
 int main(int argc, char **argv)
 {
-	auto zip = akdzlib::zipper();
+	//auto zip = akdzlib::zipper();
 
-	zip.open("mojZip2.zip");
+	//zip.open("mojZip2.zip");
 
-	/*std::ifstream ifs;
+	///*std::ifstream ifs;
 
-	ifs.open("foo2.txt", std::ifstream::in);
-	zip.addEntry("foo2.txt");
-	zip << ifs;*/
+	//ifs.open("foo2.txt", std::ifstream::in);
+	//zip.addEntry("foo2.txt");
+	//zip << ifs;*/
 
-	
+	//
 
-	auto unzip = akdzlib::unzipper();
+	//auto unzip = akdzlib::unzipper();
 
 
-	unzip.open("mojZip.zip");
-	unzip.openEntry("foo2.txt");
-	unzip.getEntrySize();
+	//unzip.open("mojZip.zip");
+	//unzip.openEntry("foo2.txt");
+	//unzip.getEntrySize();
 
-	unzip.close();
-	zip.close();
-	//auto b = Bzip2();
-	////b.example();
+	//unzip.close();
+	//zip.close();
 
-	//auto zip = ZipWrapper("foo2.txt");			//test.txt.z  //foo2.txt
 
-	//if(zip.CompressFile(nullptr, stdout))
-	//	std::cout << "Kompresja zakończona sukcesem" << std::endl;
-	//else
-	//	std::cout << "Kompresja nieudana" << std::endl;
 
-	/*if(zip.DeCompressFromStrandard())
-		std::cout << "Dekompresja zakończona sukcesem" << std::endl;
-	else
-		std::cout << "dekompresja nieudana" << std::endl;*/
+	auto zip = ZlibWrapper();
+	zip.Open("pkZip.zip");
 
+	auto l = zip.ListContents();
+	auto header = zip.GetHeader("foo2.txt");
+	/*
+	zip.AddFile("foo2.txt");
+	zip.AddFile("inwo.txt");
+	zip.AddFile("plik2.txt");
+	*/
+	zip.Close();
 }

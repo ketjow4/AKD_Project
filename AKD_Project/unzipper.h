@@ -21,6 +21,7 @@ namespace akdzlib
 		void closeEntry();
 		bool isOpenEntry();
 		unsigned int getEntrySize();
+		unz_file_info64 getEntryHeader() const;
 
 		const std::vector<std::string>& getFilenames();
 		const std::vector<std::string>& getFolders();
