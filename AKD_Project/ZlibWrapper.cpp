@@ -39,20 +39,26 @@ void ZlibWrapper::Close()
 
 std::vector<std::string> ZlibWrapper::ListContents()
 {
+	if (!unzipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	return unzipArchive.getFilenames();
 }
 
 unz_file_info64 ZlibWrapper::GetHeader(const char* fileName)
 {
-	unzipArchive.openEntry(fileName);
+	if (!unzipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
+	throwCustomException(unzipArchive.openEntry(fileName));
 	return unzipArchive.getEntryHeader();
 }
 
 void ZlibWrapper::AddFile(const char* fileName, bool bz2Compression, int compressionLevel)
 {
+	if(!zipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	std::ifstream file;
 	file.open(fileName);
-	zipArchive.addEntry(fileName, bz2Compression, compressionLevel);
+	throwCustomException(zipArchive.addEntry(fileName, bz2Compression, compressionLevel));
 	zipArchive << file;
 	zipArchive.closeEntry();
 	file.close();
@@ -60,6 +66,8 @@ void ZlibWrapper::AddFile(const char* fileName, bool bz2Compression, int compres
 
 void ZlibWrapper::AddRawFile(const char* fileName, char* data, int length, bool bz2Compression)
 {
+	if (!zipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	//std::ifstream file;
 	//file.open(fileName);
 	zipArchive.open("pkZip2.zip", true);
@@ -71,7 +79,9 @@ void ZlibWrapper::AddRawFile(const char* fileName, char* data, int length, bool 
 
 std::vector<char> ZlibWrapper::GetFile(const char* fileName)
 {
-	unzipArchive.openEntry(fileName, false);
+	if (!unzipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
+	throwCustomException(unzipArchive.openEntry(fileName, false));
 	std::ofstream file;
 	auto ptr = unzipArchive.getContent(false);
 	return ptr;
@@ -79,7 +89,9 @@ std::vector<char> ZlibWrapper::GetFile(const char* fileName)
 
 std::vector<char> ZlibWrapper::GetRawFile(const char* fileName)
 {
-	unzipArchive.openEntry(fileName,true);
+	if (!unzipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
+	throwCustomException(unzipArchive.openEntry(fileName, true));
 	std::ofstream file;
 	auto ptr = unzipArchive.getContent(true);
 	return ptr;
@@ -89,4 +101,23 @@ bool ZlibWrapper::fileExist(const std::string& name)
 {
 	struct stat buffer;
 	return (stat(name.c_str(), &buffer) == 0);
+}
+
+void ZlibWrapper::throwCustomException(int exceptionNumber)
+{
+	switch (exceptionNumber)
+	{
+	case ZIP_PARAMERROR:
+		throw new ZipParameterException("B³êdny parametr wywo³ania.");
+	case ZIP_BADZIPFILE:
+		throw new ZipBadFileException("B³¹d odczytu pliku.");
+	case ZIP_INTERNALERROR:
+		throw new ZipInternalException("Wewnêtrzny b³¹d pliku .zip .");
+	case UNZ_END_OF_LIST_OF_FILE:
+		throw new ZipEndOfListofFileException("B³¹d odczytania listy plików.");
+	case -1:
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
+	default:
+		break;
+	}
 }

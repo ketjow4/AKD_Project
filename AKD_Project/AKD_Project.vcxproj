@@ -193,6 +193,7 @@
     <ClInclude Include="minizip\unzip.h" />
     <ClInclude Include="minizip\zip.h" />
     <ClInclude Include="unzipper.h" />
+    <ClInclude Include="CustomExceptions.h" />
     <ClInclude Include="zipper.h" />
     <ClInclude Include="ZlibWrapper.h" />
   </ItemGroup>

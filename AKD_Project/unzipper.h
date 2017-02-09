@@ -17,7 +17,7 @@ namespace akdzlib
 		void close();
 		bool isOpen();
 
-		bool openEntry( const char* filename, bool raw = false);
+		int openEntry( const char* filename, bool raw = false);
 		void closeEntry();
 		bool isOpenEntry();
 		unsigned int getEntrySize(bool raw);

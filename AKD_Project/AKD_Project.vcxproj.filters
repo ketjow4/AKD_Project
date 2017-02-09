@@ -16,6 +16,9 @@
     <Filter Include="minizip">
       <UniqueIdentifier>{ff9164a1-4978-4764-b5a9-25564838be04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Exceptions">
+      <UniqueIdentifier>{79106381-0ef2-4a61-93b7-d227a699c612}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="ZlibWrapper.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomExceptions.h">
+      <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

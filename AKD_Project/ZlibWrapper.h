@@ -2,6 +2,7 @@
 
 #include "zipper.h"
 #include "unzipper.h"
+#include "CustomExceptions.h"
 #include <list>
 #include <fstream>
 
@@ -43,5 +44,6 @@ private:
 	bool _isArchiveOpen;
 
 	static bool fileExist(const std::string& name);
+	static void throwCustomException(int exceptionNumber);
 };
 

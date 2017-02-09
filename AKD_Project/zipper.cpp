@@ -52,8 +52,8 @@ namespace akdzlib
 
 	// Create a zip entry; either file or folder. Folder has to 
 	// end with a slash or backslash.
-	// return: true if open, false otherwise
-	bool zipper::addEntry( const char* filename, bool bz2Compression, int compressionLevel)
+	// return: error code, 0 if fine
+	int zipper::addEntry( const char* filename, bool bz2Compression, int compressionLevel)
 	{
 		if ( isOpen() )
 		{
@@ -87,8 +87,9 @@ namespace akdzlib
 			}
 
 			entryOpen_ = (err == ZIP_OK);
+			return err;
 		}
-		return entryOpen_;
+		return -1;
 	}
 
 	// Close the currently open zip entry.

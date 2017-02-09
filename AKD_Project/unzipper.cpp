@@ -65,14 +65,14 @@ namespace akdzlib
 	}
 
 	// open an existing zip entry.
-	// return: true if open, false otherwise
-	bool unzipper::openEntry(const char* filename, bool raw)
+	// return: error code, 0 if fine
+	int unzipper::openEntry(const char* filename, bool raw)
 	{
 		if (isOpen())
 		{
 			closeEntry();
 			int err = 0;
-			 err = unzLocateFile(zipFile_, filename, 0);
+			err = unzLocateFile(zipFile_, filename, 0);
 			if (err == UNZ_OK)
 			{
 				if (raw)
@@ -81,8 +81,9 @@ namespace akdzlib
 					err = unzOpenCurrentFile(zipFile_);
 				entryOpen_ = (err == UNZ_OK);
 			}
+			return err;
 		}
-		return entryOpen_;
+		return 0;
 	}
 
 	// Close the currently open zip entry.
