@@ -64,17 +64,15 @@ void ZlibWrapper::AddFile(const char* fileName, bool bz2Compression, int compres
 	file.close();
 }
 
-void ZlibWrapper::AddRawFile(const char* fileName, char* data, int length, bool bz2Compression)
+void ZlibWrapper::AddRawFile(const char* archivePath, const char* fileName, std::vector<char> data, bool bz2Compression, unz_file_info64 fi)
 {
+	zipArchive.open(archivePath, true);
 	if (!zipArchive.isOpen())
-		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
-	//std::ifstream file;
-	//file.open(fileName);
-	zipArchive.open("pkZip2.zip", true);
+		zipArchive.open(archivePath, false);
+		//throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	zipArchive.addRawEntry(fileName, bz2Compression);
-	zipArchive.WriteRawData(data, length);
+	zipArchive.WriteRawData(data.data(), data.size(),fi.uncompressed_size,fi.crc);
 	zipArchive.closeEntry();
-	//file.close();
 }
 
 std::vector<char> ZlibWrapper::GetFile(const char* fileName)

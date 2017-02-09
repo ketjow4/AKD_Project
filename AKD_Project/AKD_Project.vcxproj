@@ -184,7 +184,6 @@
     <ClCompile Include="ZlibWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bzip2.h" />
     <ClInclude Include="ioapi_mem.h" />
     <ClInclude Include="minizip\crypt.h" />
     <ClInclude Include="minizip\ioapi.h" />

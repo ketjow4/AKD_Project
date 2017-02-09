@@ -32,7 +32,7 @@ public:
 	*/
 	void AddFile(const char* fileName, bool bz2Compression, int compressionLevel);
 
-	void AddRawFile(const char* fileName, char* data, int length, bool bz2Compression);
+	void AddRawFile(const char* archivePath ,const char* fileName, std::vector<char> data, bool bz2Compression, unz_file_info64 fi);
 
 	std::vector<char> GetFile(const char*fileName);
 

@@ -24,7 +24,7 @@ namespace akdzlib
 
 		bool addRawEntry(const char* filename, bool bz2Compression);
 
-		void zipper::WriteRawData(char* data, int length);
+		void zipper::WriteRawData(char* data, int length, long uncompressed_size, long crc32);
 
 		zipper& operator<<( std::istream& is );
 

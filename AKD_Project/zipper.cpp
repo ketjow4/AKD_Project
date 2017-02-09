@@ -165,12 +165,12 @@ namespace akdzlib
 		return *this;
 	}
 
-	void zipper::WriteRawData(char* data, int length)
+	void zipper::WriteRawData(char* data, int length, long uncompressed_size, long crc32)
 	{
 		int err = ZIP_OK;
 
 		err = zipWriteInFileInZip(zipFile_, data, length);
-		zipCloseFileInZipRaw(zipFile_, 0, 0);
+		zipCloseFileInZipRaw(zipFile_, uncompressed_size, crc32);
 
 		return ;
 	}
