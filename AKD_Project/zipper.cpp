@@ -107,6 +107,34 @@ namespace akdzlib
 	{
 		return entryOpen_;
 	}
+
+	bool zipper::addRawEntry(const char * filename, bool bz2Compression)
+	{
+		if (isOpen())
+		{
+			closeEntry();
+
+			while (filename[0] == '\\' || filename[0] == '/')
+			{
+				filename++;
+			}
+
+			zip_fileinfo zi = { 0 };
+			getTime(zi.tmz_date);
+
+			//zipRemoveExtraInfoBlock(pLocalHeaderExtraFieldData, &nLocalHeaderExtraFieldDataLen, 0x0001);
+			int err = 0;
+
+			err = zipOpenNewFileInZip4_64(zipFile_, filename, &zi,
+				NULL, 0, NULL, 0, NULL, bz2Compression ? Z_BZIP2ED : Z_DEFLATED, NULL, 1, -MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY, NULL, 0, 0, 0, 0);
+
+			
+
+			entryOpen_ = (err == ZIP_OK);
+		}
+		return entryOpen_;
+		
+	}
 	
 	// Stream operator for dumping data from an input stream to the 
 	// currently open zip entry.
@@ -134,6 +162,16 @@ namespace akdzlib
 			}
 		}
 		return *this;
+	}
+
+	void zipper::WriteRawData(char* data, int length)
+	{
+		int err = ZIP_OK;
+
+		err = zipWriteInFileInZip(zipFile_, data, length);
+		zipCloseFileInZipRaw(zipFile_, 0, 0);
+
+		return ;
 	}
 
 	// Fill the zip time structure

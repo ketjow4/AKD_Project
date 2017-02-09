@@ -58,11 +58,30 @@ void ZlibWrapper::AddFile(const char* fileName, bool bz2Compression, int compres
 	file.close();
 }
 
-char* ZlibWrapper::GetFile(const char* fileName)
+void ZlibWrapper::AddRawFile(const char* fileName, char* data, int length, bool bz2Compression)
 {
-	unzipArchive.openEntry(fileName);
+	//std::ifstream file;
+	//file.open(fileName);
+	zipArchive.open("pkZip2.zip", true);
+	zipArchive.addRawEntry(fileName, bz2Compression);
+	zipArchive.WriteRawData(data, length);
+	zipArchive.closeEntry();
+	//file.close();
+}
+
+std::vector<char> ZlibWrapper::GetFile(const char* fileName)
+{
+	unzipArchive.openEntry(fileName, false);
 	std::ofstream file;
-	auto ptr = unzipArchive.getContent();
+	auto ptr = unzipArchive.getContent(false);
+	return ptr;
+}
+
+std::vector<char> ZlibWrapper::GetRawFile(const char* fileName)
+{
+	unzipArchive.openEntry(fileName,true);
+	std::ofstream file;
+	auto ptr = unzipArchive.getContent(true);
 	return ptr;
 }
 

@@ -22,10 +22,16 @@ namespace akdzlib
 		void closeEntry();
 		bool isOpenEntry();
 
+		bool addRawEntry(const char* filename, bool bz2Compression);
+
+		void zipper::WriteRawData(char* data, int length);
+
 		zipper& operator<<( std::istream& is );
 
 	private:
 		void getTime(tm_zip& tmZip);
+
+
 
 	private:
 		zipFile			zipFile_;

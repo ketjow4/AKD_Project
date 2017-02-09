@@ -6,18 +6,18 @@
 //	Tematem projektu jest wykorzystanie obu tych bibliotek do stworzenia klasy
 //	języka C++ reprezentującej archiwum ZIP.
 //	Klasa powinna udostępniać min.następujące metody :
-//	   • Create - utworzenie pustego archiwum,
-//		   • Open - otwarcie archiwum,
-//		   • Close - zamknięcie archiwum,
-//		   • ListContents - zwrócenie listy plików(do listy),
-//		   • GetHeader - zwrócenie nagłówka konkretnego pliku z archiwum,
-//		   • AddFile - dodanie pliku do archiwum z kompresją(tu się ustala parametry kompresji),
+//	   • Create - utworzenie pustego archiwum,																	---BRAK!!!!!!!!!!
+//		   • Open - otwarcie archiwum,																			---GOTOWE
+//		   • Close - zamknięcie archiwum,																		---GOTOWE
+//		   • ListContents - zwrócenie listy plików(do listy),													---GOTOWE
+//		   • GetHeader - zwrócenie nagłówka konkretnego pliku z archiwum,										---GOTOWE
+//		   • AddFile - dodanie pliku do archiwum z kompresją(tu się ustala parametry kompresji),				---GOTOWE
 //		   • AddFileRaw - dodanie do archiwum pliku skompresowanego(przydaje się kiedy
 //			   trzeba przenosić plik z archiwum do archiwum - np.przy wyrzucaniu niektó -
 //			   rych plików, bądź zastępowaniu nową wersją),
-//		   • GetFile - dekompresja pliku z archiwum,
-//		   • GetFileRaw - zwrócenie z archiwum pliku skompresowanego.
-//		   Klasa powinna także umożliwiać podpięcie przez użytkownika własnego paska postępu
+//		   • GetFile - dekompresja pliku z archiwum,															---GOTOWE
+//		   • GetFileRaw - zwrócenie z archiwum pliku skompresowanego.											---GOTOWE
+//		   Klasa powinna także umożliwiać podpięcie przez użytkownika własnego paska postępu					
 //		   (np.poprzez odziedziczenie po jakiejś klasie bazowej) i własnej obsługi błędów.
 
 #include "ZlibWrapper.h"
@@ -66,15 +66,19 @@ int main(int argc, char **argv)
 
 
 	auto zip = ZlibWrapper();
-	zip.Open("pkZip.zip");
+	zip.Open("pkZip2.zip");
 
+	zip.AddFile("foo2.txt", true, 9);
+	zip.Close();
+	zip.Open("pkZip2.zip");
 	auto l = zip.ListContents();
 	auto header = zip.GetHeader("foo2.txt");
 
-	auto result = zip.GetFile(l[0].c_str());
-	cout << result;
+	auto result = zip.GetRawFile(l[0].c_str());
+	cout << result.data();
 
-	delete result;
+	zip.AddRawFile("abc2.txt",result.data(),result.size(), true);
+
 	//zip.AddFile("foo2.txt");
 	/*zip.AddFile("inwo.txt");
 	zip.AddFile("plik2.txt");*/

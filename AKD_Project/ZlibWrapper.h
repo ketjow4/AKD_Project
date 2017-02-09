@@ -31,7 +31,12 @@ public:
 	*/
 	void AddFile(const char* fileName, bool bz2Compression, int compressionLevel);
 
-	char* GetFile(const char*fileName);
+	void AddRawFile(const char* fileName, char* data, int length, bool bz2Compression);
+
+	std::vector<char> GetFile(const char*fileName);
+
+	std::vector<char> GetRawFile(const char* fileName);
+
 private:
 	akdzlib::zipper zipArchive;
 	akdzlib::unzipper unzipArchive;

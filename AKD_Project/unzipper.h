@@ -17,13 +17,13 @@ namespace akdzlib
 		void close();
 		bool isOpen();
 
-		bool openEntry( const char* filename );
+		bool openEntry( const char* filename, bool raw = false);
 		void closeEntry();
 		bool isOpenEntry();
-		unsigned int getEntrySize();
+		unsigned int getEntrySize(bool raw);
 		unz_file_info64 getEntryHeader() const;
 
-		char* getContent();
+		std::vector<char> getContent(bool raw);
 
 		const std::vector<std::string>& getFilenames();
 		const std::vector<std::string>& getFolders();

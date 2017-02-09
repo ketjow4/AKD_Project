@@ -66,15 +66,19 @@ namespace akdzlib
 
 	// open an existing zip entry.
 	// return: true if open, false otherwise
-	bool unzipper::openEntry(const char* filename)
+	bool unzipper::openEntry(const char* filename, bool raw)
 	{
 		if (isOpen())
 		{
 			closeEntry();
-			int err = unzLocateFile(zipFile_, filename, 0);
+			int err = 0;
+			 err = unzLocateFile(zipFile_, filename, 0);
 			if (err == UNZ_OK)
 			{
-				err = unzOpenCurrentFile(zipFile_);
+				if (raw)
+					err = unzOpenCurrentFile2(zipFile_, NULL, NULL, 1);
+				else
+					err = unzOpenCurrentFile(zipFile_);
 				entryOpen_ = (err == UNZ_OK);
 			}
 		}
@@ -100,7 +104,7 @@ namespace akdzlib
 
 	// Get the zip entry uncompressed size.
 	// return: zip entry uncompressed size
-	unsigned int unzipper::getEntrySize()
+	unsigned int unzipper::getEntrySize(bool raw)
 	{
 		if (entryOpen_)
 		{
@@ -110,7 +114,10 @@ namespace akdzlib
 
 			if (err == UNZ_OK)
 			{
-				return (unsigned int)oFileInfo.uncompressed_size;
+				if(raw)
+					return (unsigned int)oFileInfo.compressed_size;
+				else
+					return (unsigned int)oFileInfo.uncompressed_size;
 			}
 
 		}
@@ -172,7 +179,7 @@ namespace akdzlib
 	{
 		if (isOpenEntry())
 		{
-			unsigned int size = getEntrySize();
+			unsigned int size = getEntrySize(true);
 			char* buf = new char[size];
 			size = unzReadCurrentFile(zipFile_, buf, size);
 			if (size > 0)
@@ -186,16 +193,18 @@ namespace akdzlib
 	}
 
 
-	char * unzipper::getContent()
+	std::vector<char> unzipper::getContent(bool raw)
 	{
 		char* buf = nullptr;
+		unsigned int size;
 		if (isOpenEntry())
 		{
-			unsigned int size = getEntrySize();
+			size = getEntrySize(raw);
 			buf = new char[size];
 			size = unzReadCurrentFile(zipFile_, buf, size);
 		}
-		return buf;
+		
+		return std::vector<char>(buf, buf + size);
 	}
 
 };
