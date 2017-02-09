@@ -48,22 +48,22 @@ unz_file_info64 ZlibWrapper::GetHeader(const char* fileName)
 	return unzipArchive.getEntryHeader();
 }
 
-void ZlibWrapper::AddFile(const char* fileName)
+void ZlibWrapper::AddFile(const char* fileName, bool bz2Compression, int compressionLevel)
 {
 	std::ifstream file;
 	file.open(fileName);
-	zipArchive.addEntry(fileName);
+	zipArchive.addEntry(fileName, bz2Compression, compressionLevel);
 	zipArchive << file;
 	zipArchive.closeEntry();
 	file.close();
 }
 
-std::ofstream ZlibWrapper::GetFile(const char* fileName)
+char* ZlibWrapper::GetFile(const char* fileName)
 {
 	unzipArchive.openEntry(fileName);
 	std::ofstream file;
-	unzipArchive >> file;
-	return file;
+	auto ptr = unzipArchive.getContent();
+	return ptr;
 }
 
 bool ZlibWrapper::fileExist(const std::string& name)

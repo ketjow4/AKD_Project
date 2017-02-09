@@ -27,7 +27,7 @@ namespace akdzlib
 	bool zipper::open( const char* filename, bool append ) 
 	{
 		close();
-		zipFile_ = zipOpen64( filename, append?APPEND_STATUS_ADDINZIP:0 );
+		zipFile_ = zipOpen64( filename, append ? APPEND_STATUS_ADDINZIP:0 );
 
 		return isOpen();
 	}
@@ -53,7 +53,7 @@ namespace akdzlib
 	// Create a zip entry; either file or folder. Folder has to 
 	// end with a slash or backslash.
 	// return: true if open, false otherwise
-	bool zipper::addEntry( const char* filename )
+	bool zipper::addEntry( const char* filename, bool bz2Compression, int compressionLevel)
 	{
 		if ( isOpen() )
 		{
@@ -64,12 +64,27 @@ namespace akdzlib
 				filename++;
 			}
 			
-			//?? we dont need the stinking time
 			zip_fileinfo zi = {0};
 			getTime( zi.tmz_date );
 
-			int err = zipOpenNewFileInZip( zipFile_, filename, &zi,
-				NULL, 0, NULL, 0, NULL, Z_DEFLATED, Z_DEFAULT_COMPRESSION );
+			int err = 0;
+			if(!bz2Compression)
+			{
+				if (compressionLevel != Z_NO_COMPRESSION &&
+					compressionLevel != Z_BEST_SPEED &&
+					compressionLevel != Z_BEST_COMPRESSION &&
+					compressionLevel != Z_DEFAULT_COMPRESSION ) compressionLevel = Z_DEFAULT_COMPRESSION;
+
+				err = zipOpenNewFileInZip( zipFile_, filename, &zi,
+				NULL, 0, NULL, 0, NULL, Z_DEFLATED, compressionLevel);
+			}
+			else
+			{
+				if (compressionLevel > 9) compressionLevel = 9;
+				if (compressionLevel < 1) compressionLevel = 1;
+				 err = zipOpenNewFileInZip(zipFile_, filename, &zi,
+					NULL, 0, NULL, 0, NULL, Z_BZIP2ED, compressionLevel);
+			}
 
 			entryOpen_ = (err == ZIP_OK);
 		}

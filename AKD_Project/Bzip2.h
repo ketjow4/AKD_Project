@@ -7,8 +7,9 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <bzlib.h>
+#include <fstream>
 
-
+using namespace std;
 
 class Bzip2
 {
@@ -16,29 +17,31 @@ public:
 	Bzip2() {}
 	~Bzip2() {}
 
-	int example()
+	int compress()
 	{
+		ifstream  panTadeusz("foo2.txt");
 
-		//https://www.codeproject.com/Questions/362653/Compressing-text-files-with-bzlib-library-using-Cp
+		std::string str((std::istreambuf_iterator<char>(panTadeusz)),
+			std::istreambuf_iterator<char>());
 
-		char srcDir[] = "dirToZip/";
-		char extractTo[] = ".";
-
-
-		char tbz2Filename[] = "file.tar.bz2";
+		char tbz2Filename[] = "file.bz2";
 		FILE *tbz2File = fopen(tbz2Filename, "wb");
 		int bzError;
 		const int BLOCK_MULTIPLIER = 7;
-		BZFILE *pBz = BZ2_bzWriteOpen(&bzError, tbz2File, BLOCK_MULTIPLIER, 0, 0);
+		//BZFILE *pBz = BZ2_bzWriteOpen(&bzError, tbz2File, BLOCK_MULTIPLIER, 0, 0);
+
+		BZFILE *pBz = BZ2_bzopen("file.bz2", "wb");
 
 		const int BUF_SIZE = 10000;
 		char* buf = new char[BUF_SIZE];
 		size_t bytesRead;
-		/*while ((bytesRead = fread(tarFD, buf, BUF_SIZE)) > 0) {
-			BZ2_bzWrite(&bzError, pBz, buf, bytesRead);
-		}*/
-		BZ2_bzWriteClose(&bzError, pBz, 0, NULL, NULL);
+		
+			//BZ2_bzWrite(&bzError, pBz, &str[0], str.length());
+		
+		//BZ2_bzWriteClose(&bzError, pBz, 0, NULL, NULL);
 
+		BZ2_bzwrite(pBz, &str[0], str.length());
+		BZ2_bzclose(pBz);
 
 		delete[] buf;
 		return 0;
@@ -48,10 +51,13 @@ public:
 //anther example from internet
 //http://stackoverflow.com/questions/3912157/how-do-i-extract-all-the-data-from-a-bzip2-archive-with-c
 
-	int bunzip_one(FILE *f) {
+	int decompress() 
+	{
 		int bzError;
 		BZFILE *bzf;
 		char buf[4096];
+		FILE *f = fopen("file.zip", "rb");
+
 
 		bzf = BZ2_bzReadOpen(&bzError, f, 0, 0, NULL, 0);
 		if (bzError != BZ_OK) {
@@ -59,11 +65,15 @@ public:
 			return -1;
 		}
 
-		while (bzError == BZ_OK) {
+		while (bzError == BZ_OK) 
+		{
 			int nread = BZ2_bzRead(&bzError, bzf, buf, sizeof buf);
-			if (bzError == BZ_OK || bzError == BZ_STREAM_END) {
+			
+			if (bzError == BZ_OK || bzError == BZ_STREAM_END) 
+			{
 				size_t nwritten = fwrite(buf, 1, nread, stdout);
-				if (nwritten != (size_t)nread) {
+				if (nwritten != (size_t)nread) 
+				{
 					fprintf(stderr, "E: short write\n");
 					return -1;
 				}
@@ -79,27 +89,7 @@ public:
 		return 0;
 	}
 
-	int
-		bunzip_many(const char *fname) {
-		FILE *f;
-
-		f = fopen(fname, "rb");
-		if (f == NULL) {
-			perror(fname);
-			return -1;
-		}
-
-		fseek(f, 0, SEEK_SET);
-		if (bunzip_one(f) == -1)
-			return -1;
-
-		fseek(f, 42, SEEK_SET); /* hello.bz2 is 42 bytes long in my case */
-		if (bunzip_one(f) == -1)
-			return -1;
-
-		fclose(f);
-		return 0;
-	}
+	
 
 
 private:

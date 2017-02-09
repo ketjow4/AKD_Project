@@ -25,9 +25,23 @@
 #include <fstream>
 
 
+
+
+
 int main(int argc, char **argv)
 {
+
 	//auto zip = akdzlib::zipper();
+
+	/*Bzip2 bzip;
+
+	auto unzip2 = akdzlib::unzipper();
+
+
+	bzip.compress();
+	unzip2.open("foo2.zip");
+	bzip.decompress();*/
+
 
 	//zip.open("mojZip2.zip");
 
@@ -56,10 +70,14 @@ int main(int argc, char **argv)
 
 	auto l = zip.ListContents();
 	auto header = zip.GetHeader("foo2.txt");
-	/*
-	zip.AddFile("foo2.txt");
-	zip.AddFile("inwo.txt");
-	zip.AddFile("plik2.txt");
-	*/
+
+	auto result = zip.GetFile(l[0].c_str());
+	cout << result;
+
+	delete result;
+	//zip.AddFile("foo2.txt");
+	/*zip.AddFile("inwo.txt");
+	zip.AddFile("plik2.txt");*/
+	
 	zip.Close();
 }

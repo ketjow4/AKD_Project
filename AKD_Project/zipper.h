@@ -18,7 +18,7 @@ namespace akdzlib
 		void close();
 		bool isOpen();
 
-		bool addEntry( const char* filename );
+		bool addEntry( const char* filename,  bool bz2Compression, int compressionLevel);
 		void closeEntry();
 		bool isOpenEntry();
 

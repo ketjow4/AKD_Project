@@ -184,4 +184,18 @@ namespace akdzlib
 		}
 		return *this;
 	}
+
+
+	char * unzipper::getContent()
+	{
+		char* buf = nullptr;
+		if (isOpenEntry())
+		{
+			unsigned int size = getEntrySize();
+			buf = new char[size];
+			size = unzReadCurrentFile(zipFile_, buf, size);
+		}
+		return buf;
+	}
+
 };
