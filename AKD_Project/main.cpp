@@ -17,9 +17,7 @@
 //			   rych plików, bądź zastępowaniu nową wersją),
 //		   • GetFile - dekompresja pliku z archiwum,															---GOTOWE
 //		   • GetFileRaw - zwrócenie z archiwum pliku skompresowanego.											---GOTOWE
-//		   Klasa powinna także umożliwiać podpięcie przez użytkownika własnego paska postępu					
-//		   (np.poprzez odziedziczenie po jakiejś klasie bazowej)												---BRAK!!!!!!!!!!
-//			i własnej obsługi błędów.																			---GOTOWE
+//			•  własnej obsługi błędów.																			---GOTOWE
 
 #include "ZlibWrapper.h"
 #include <fstream>
@@ -31,22 +29,23 @@ using namespace std;
 int main(int argc, char **argv)
 {
 	auto zip = ZlibWrapper();
-	zip.Open("pkZip2.zip");
+	zip.Open("nowyZip.zip");
 
-	//zip.AddFile("foo2.txt", true, 9);
-	//zip.Close();
-	//zip.Open("pkZip2.zip");
+	zip.AddFile("foo2.txt", true, 9);
+	zip.AddFile("inwo.txt", true, 9);
+	zip.Close();
+	zip.Open("nowyZip.zip");
 	auto l = zip.ListContents();
-	auto header = zip.GetHeader("inwo.txt");
+	for (auto name : l)
+		cout << name << "\n";
+
+	auto header = zip.GetHeader(l[0].c_str());
+
+	cout << zip.GetFile(l[0].c_str()).data();
 
 	auto result = zip.GetRawFile(l[0].c_str());
 	std::cout << result.data();
 
-	zip.AddRawFile("pkZip2.zip","abc2.txt",result, true,header);
-
-	//zip.AddFile("foo2.txt");
-	/*zip.AddFile("inwo.txt");
-	zip.AddFile("plik2.txt");*/
-	
+	zip.AddRawFile("Zip2.zip","abc2.txt",result, true,header);	
 	zip.Close();
 }

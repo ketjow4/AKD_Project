@@ -7,7 +7,8 @@ namespace akdzlib
 {
 	unzipper::unzipper() :
 		zipFile(nullptr),
-		entryOpen(false)
+		entryOpen(false),
+		progressBar(nullptr)
 	{
 	}
 
@@ -178,6 +179,8 @@ namespace akdzlib
 			size = getEntrySize(raw);
 			buf = new char[size];
 			size = unzReadCurrentFile(zipFile, buf, size);
+			if (progressBar != nullptr)
+				progressBar(size, size);
 		}
 
 		return std::vector<char>(buf, buf + size);

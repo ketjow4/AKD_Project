@@ -30,12 +30,6 @@
     <ClCompile Include="minizip\iowin32.c">
       <Filter>minizip</Filter>
     </ClCompile>
-    <ClCompile Include="minizip\miniunz.c">
-      <Filter>minizip</Filter>
-    </ClCompile>
-    <ClCompile Include="minizip\minizip.c">
-      <Filter>minizip</Filter>
-    </ClCompile>
     <ClCompile Include="minizip\mztools.c">
       <Filter>minizip</Filter>
     </ClCompile>

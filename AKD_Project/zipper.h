@@ -5,6 +5,7 @@
 #include <time.h>
 #include "minizip/zip.h"
 #include "minizip/ioapi.h"
+#include <functional>
 
 namespace akdzlib
 {
@@ -23,10 +24,11 @@ namespace akdzlib
 		void closeEntry();
 		bool isOpenEntry() const;
 
-		void zipper::writeRawData(char* data, int length, long uncompressed_size, long crc32) const;
+		void writeRawData(char* data, int length, long uncompressed_size, long crc32) const;
 
 		zipper& operator<<(std::istream& is);
 
+		std::function<void(long, long)> progressBar;
 	private:
 		static void getTime(tm_zip& tmZip);
 

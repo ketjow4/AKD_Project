@@ -10,7 +10,8 @@ namespace akdzlib
 
 	zipper::zipper() :
 		zipFile(nullptr),
-		entryOpen(false)
+		entryOpen(false),
+		progressBar(nullptr)
 	{
 	}
 
@@ -123,15 +124,18 @@ namespace akdzlib
 
 		if (isOpenEntry())
 		{
+			long read = 0;
 			while (err == ZIP_OK && is.good())
 			{
 				is.read(buf, BUFSIZE);
 				unsigned int nRead = static_cast<unsigned int>(is.gcount());
-
+				read += nRead;
 				if (nRead)
 					err = zipWriteInFileInZip(zipFile, buf, nRead);
 				else
 					break;
+				if (progressBar != nullptr)
+					progressBar(read, is.tellg());
 			}
 		}
 		return *this;
@@ -143,6 +147,8 @@ namespace akdzlib
 
 		err = zipWriteInFileInZip(zipFile, data, length);
 		zipCloseFileInZipRaw64(zipFile, uncompressed_size, crc32);
+		if (progressBar != nullptr)
+			progressBar(uncompressed_size, uncompressed_size);
 	}
 
 	void zipper::getTime(tm_zip& tmZip)

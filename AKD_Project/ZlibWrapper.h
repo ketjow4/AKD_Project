@@ -27,9 +27,9 @@ public:
 		Z_DEFAULT_COMPRESSION  (-1)
 
 	Levels of compression for bzip2:
-	1 - best speed
-	2...8
-	9 - best compression
+		1 - best speed
+		2...8
+		9 - best compression
 	*/
 	void AddFile(const char* fileName, bool bz2Compression, int compressionLevel);
 
@@ -39,6 +39,9 @@ public:
 
 	std::vector<char> GetRawFile(const char* fileName);
 
+	void setProgressBarFunction(std::function<void(long, long)> fun);
+
+	std::function<void(long, long)> progressBar;
 private:
 	akdzlib::zipper zipArchive;
 	akdzlib::unzipper unzipArchive;

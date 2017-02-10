@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <functional>
 
 namespace akdzlib
 {
@@ -28,6 +29,8 @@ namespace akdzlib
 		const std::vector<std::string>& getFolders() const;
 
 		unzipper& operator >> (std::ostream& os);
+
+		std::function<void(long, long)> progressBar;
 
 	private:
 		void readEntries();

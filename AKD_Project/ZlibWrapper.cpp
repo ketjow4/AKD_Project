@@ -77,7 +77,6 @@ void ZlibWrapper::AddRawFile(const char* archivePath, const char* fileName, std:
 	zipArchive.open(archivePath, true);
 	if (!zipArchive.isOpen())
 		zipArchive.open(archivePath, false);
-		//throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	zipArchive.addRawEntry(fileName, bz2Compression);
 	zipArchive.writeRawData(data.data(), data.size(),fi.uncompressed_size,fi.crc);
 	zipArchive.closeEntry();
@@ -101,6 +100,12 @@ std::vector<char> ZlibWrapper::GetRawFile(const char* fileName)
 	std::ofstream file;
 	auto ptr = unzipArchive.getContent(true);
 	return ptr;
+}
+
+void ZlibWrapper::setProgressBarFunction(std::function<void(long, long)> fun)
+{
+	zipArchive.progressBar = fun;
+	unzipArchive.progressBar = fun;
 }
 
 bool ZlibWrapper::fileExist(const std::string& name)
