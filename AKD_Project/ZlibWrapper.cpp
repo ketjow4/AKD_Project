@@ -79,7 +79,7 @@ void ZlibWrapper::AddRawFile(const char* archivePath, const char* fileName, std:
 		zipArchive.open(archivePath, false);
 		//throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	zipArchive.addRawEntry(fileName, bz2Compression);
-	zipArchive.WriteRawData(data.data(), data.size(),fi.uncompressed_size,fi.crc);
+	zipArchive.writeRawData(data.data(), data.size(),fi.uncompressed_size,fi.crc);
 	zipArchive.closeEntry();
 }
 

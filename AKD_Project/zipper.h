@@ -14,28 +14,24 @@ namespace akdzlib
 		zipper();
 		~zipper(void);
 
-		bool open( const char* filename, bool append = false );
+		bool open(const char* filename, bool append = false);
 		void close();
-		bool isOpen();
+		bool isOpen() const;
 
-		int addEntry( const char* filename,  bool bz2Compression, int compressionLevel);
-		void closeEntry();
-		bool isOpenEntry();
-
+		int addEntry(const char* filename, bool bz2Compression, int compressionLevel);
 		bool addRawEntry(const char* filename, bool bz2Compression);
+		void closeEntry();
+		bool isOpenEntry() const;
 
-		void zipper::WriteRawData(char* data, int length, long uncompressed_size, long crc32);
+		void zipper::writeRawData(char* data, int length, long uncompressed_size, long crc32) const;
 
-		zipper& operator<<( std::istream& is );
-
-	private:
-		void getTime(tm_zip& tmZip);
-
-
+		zipper& operator<<(std::istream& is);
 
 	private:
-		zipFile			zipFile_;
-		bool			entryOpen_;
+		static void getTime(tm_zip& tmZip);
+
+		zipFile			zipFile;
+		bool			entryOpen;
 	};
 
 };

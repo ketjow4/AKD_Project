@@ -13,31 +13,28 @@ namespace akdzlib
 		unzipper();
 		~unzipper(void);
 
-		bool open( const char* filename );
+		bool open(const char* filename);
 		void close();
-		bool isOpen();
+		bool isOpen() const;
 
-		int openEntry( const char* filename, bool raw = false);
+		int openEntry(const char* filename, bool raw = false);
 		void closeEntry();
-		bool isOpenEntry();
-		unsigned int getEntrySize(bool raw);
+		bool isOpenEntry() const;
+		unsigned int getEntrySize(bool raw) const;
 		unz_file_info64 getEntryHeader() const;
 
-		std::vector<char> getContent(bool raw);
+		std::vector<char> getContent(bool raw) const;
+		const std::vector<std::string>& getFilenames() const;
+		const std::vector<std::string>& getFolders() const;
 
-		const std::vector<std::string>& getFilenames();
-		const std::vector<std::string>& getFolders();
-
-		unzipper& operator>>( std::ostream& os );
+		unzipper& operator >> (std::ostream& os);
 
 	private:
 		void readEntries();
 
-	private:
-		unzFile			zipFile_;
-		bool			entryOpen_;
-
-		std::vector<std::string> files_;
-		std::vector<std::string> folders_;
+		unzFile	zipFile;
+		bool entryOpen;
+		std::vector<std::string> files;
+		std::vector<std::string> folders;
 	};
 };
