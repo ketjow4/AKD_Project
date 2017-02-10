@@ -123,7 +123,6 @@ namespace akdzlib
 			zip_fileinfo zi = { 0 };
 			getTime(zi.tmz_date);
 
-			//zipRemoveExtraInfoBlock(pLocalHeaderExtraFieldData, &nLocalHeaderExtraFieldDataLen, 0x0001);
 			int err = 0;
 
 			err = zipOpenNewFileInZip4_64(zipFile_, filename, &zi,
@@ -170,7 +169,7 @@ namespace akdzlib
 		int err = ZIP_OK;
 
 		err = zipWriteInFileInZip(zipFile_, data, length);
-		zipCloseFileInZipRaw(zipFile_, uncompressed_size, crc32);
+		zipCloseFileInZipRaw64(zipFile_, uncompressed_size, crc32);
 
 		return ;
 	}

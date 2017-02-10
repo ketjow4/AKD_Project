@@ -14,6 +14,7 @@ public:
 	void Open(char* archiveName);
 	void Open(char* archiveName, bool forceNew);
 	void Close();
+	void Create(char* archiveName);
 	std::vector<std::string> ListContents();
 	unz_file_info64 GetHeader(const char* fileName);
 

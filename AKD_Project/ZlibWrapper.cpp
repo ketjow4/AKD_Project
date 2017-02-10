@@ -12,7 +12,10 @@ ZlibWrapper::~ZlibWrapper()
 void ZlibWrapper::Open(char* archiveName)
 {
 	if (fileExist(archiveName))
+	{
 		unzipArchive.open(archiveName);
+		zipArchive.open(archiveName,true);
+	}
 	else
 		zipArchive.open(archiveName);
 
@@ -35,6 +38,11 @@ void ZlibWrapper::Close()
 	zipArchive.close();
 	unzipArchive.close();
 	_isArchiveOpen = false;
+}
+
+void ZlibWrapper::Create(char* archiveName)
+{
+	Open(archiveName, true);
 }
 
 std::vector<std::string> ZlibWrapper::ListContents()
