@@ -11,12 +11,12 @@ class ZlibWrapper
 public:
 	ZlibWrapper();
 	~ZlibWrapper();
-	void Open(char* archiveName);
-	void Open(char* archiveName, bool forceNew);
+	void Open(std::string archiveName);
+	void Open(std::string archiveName, bool forceNew);
 	void Close();
-	void Create(char* archiveName);
-	std::vector<std::string> ListContents();
-	unz_file_info64 GetHeader(const char* fileName);
+	void Create(std::string archiveName);
+	const std::vector<std::string>& ListContents();
+	unz_file_info64 GetHeader(std::string fileName);
 
 
 	/*
@@ -31,17 +31,17 @@ public:
 		2...8
 		9 - best compression
 	*/
-	void AddFile(const char* fileName, bool bz2Compression, int compressionLevel);
+	void AddFile(std::string fileName, bool bz2Compression, int compressionLevel);
 
-	void AddRawFile(const char* archivePath ,const char* fileName, std::vector<char> data, bool bz2Compression, unz_file_info64 fi);
+	void AddRawFile(std::string archivePath , std::string fileName, std::vector<char>& data, bool bz2Compression, unz_file_info64 fi);
 
-	std::vector<char> GetFile(const char*fileName);
+	std::vector<char> GetFile(std::string fileName);
 
-	std::vector<char> GetRawFile(const char* fileName);
+	std::vector<char> GetRawFile(std::string fileName);
 
-	void setProgressBarFunction(std::function<void(long, long)> fun);
+	void setProgressBarFunction(std::function<void(long long, long long)> fun);
 
-	std::function<void(long, long)> progressBar;
+	std::function<void(long long, long long)> progressBar;
 private:
 	akdzlib::zipper zipArchive;
 	akdzlib::unzipper unzipArchive;
