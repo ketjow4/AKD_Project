@@ -156,6 +156,36 @@ namespace akdzlib
 			progressBar(uncompressed_size, uncompressed_size);
 	}
 
+	void zipper::writeRawData(std::string filename, long uncompressed_size, long crc32) const
+	{
+		int err = ZIP_OK;
+		std::ifstream in(filename, std::ios_base::binary | std::ios_base::in);
+		in.seekg(0, std::ios_base::end);
+		int length = in.tellg();
+		in.seekg(0, std::ios_base::beg);
+		if(in.is_open())
+		{
+			char* buf = new char[bufferSize];
+			if (isOpenEntry())
+			{
+				long read = 0;
+				while (err == ZIP_OK && in.good())
+				{
+					in.read(buf, bufferSize);
+					unsigned int nRead = static_cast<unsigned int>(in.gcount());
+					read += nRead;
+					if (nRead)
+						err = zipWriteInFileInZip(zipFile, buf, nRead);
+					else
+						break;
+					if (progressBar != nullptr)
+						progressBar(read, length);
+				}
+			}
+			zipCloseFileInZipRaw64(zipFile, uncompressed_size, crc32);
+		}	
+	}
+
 	void zipper::getTime(tm_zip& tmZip)
 	{
 		time_t rawtime;

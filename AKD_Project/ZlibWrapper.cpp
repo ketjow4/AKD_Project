@@ -82,6 +82,16 @@ void ZlibWrapper::AddRawFile(std::string archivePath, std::string fileName, std:
 	zipArchive.closeEntry();
 }
 
+void ZlibWrapper::AddRawFile(std::string archivePath, std::string fileName, std::string fromFile, bool bz2Compression, unz_file_info64 fi)
+{
+	zipArchive.open(archivePath.c_str(), true);
+	if (!zipArchive.isOpen())
+		zipArchive.open(archivePath.c_str(), false);
+	zipArchive.addRawEntry(fileName.c_str(), bz2Compression);
+	zipArchive.writeRawData(fromFile, fi.uncompressed_size, fi.crc);
+	zipArchive.closeEntry();
+}
+
 std::vector<char> ZlibWrapper::GetFile(std::string fileName)
 {
 	if (!unzipArchive.isOpen())

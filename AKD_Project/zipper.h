@@ -6,6 +6,7 @@
 #include "minizip/zip.h"
 #include "minizip/ioapi.h"
 #include <functional>
+#include <fstream>
 
 namespace akdzlib
 {
@@ -25,6 +26,7 @@ namespace akdzlib
 		bool isOpenEntry() const;
 
 		void writeRawData(char* data, int length, long uncompressed_size, long crc32) const;
+		void writeRawData(std::string filename, long uncompressed_size, long crc32) const;
 
 		zipper& operator<<(std::istream& is);
 
