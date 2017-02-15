@@ -157,14 +157,20 @@ namespace akdzlib
 	{
 		if (isOpenEntry())
 		{
-			unsigned int size = getEntrySize(true);
-			char* buf = new char[size];
-			size = unzReadCurrentFile(zipFile, buf, size);
-			if (size > 0)
+			unsigned int size = getEntrySize(isFileRaw);
+			char* buf = new char[bufferSize];
+			int readed = 0;
+			int tmp = 0;
+			do
 			{
-				os.write(buf, size);
-				os.flush();
-			}
+				tmp = unzReadCurrentFile(zipFile, buf, bufferSize);
+				readed += tmp;
+				os.write(buf, tmp);
+				if (progressBar != nullptr)
+					progressBar(readed, size);
+			} 
+			while (tmp > 0);
+			os.flush();
 			delete[] buf;
 		}
 		return *this;
@@ -174,16 +180,25 @@ namespace akdzlib
 	{
 		char* buf = nullptr;
 		unsigned int size = 0;
+		unsigned int write = 0;
 		if (isOpenEntry())
 		{
+			
 			size = getEntrySize(raw);
 			buf = new char[size];
-			size = unzReadCurrentFile(zipFile, buf, size);
-			if (progressBar != nullptr)
-				progressBar(size, size);
+			while(true)
+			{
+				auto tmp = unzReadCurrentFile(zipFile, buf + write, bufferSize);
+				write += tmp;
+				if (progressBar != nullptr)
+					progressBar(write, size);
+				if (tmp == 0)
+					break;
+			}
 		}
-
-		return std::vector<char>(buf, buf + size);
+		auto vec = std::vector<char>(buf, buf + size);
+		delete[] buf;
+		return vec;
 	}
 
 };

@@ -87,7 +87,6 @@ std::vector<char> ZlibWrapper::GetFile(std::string fileName)
 	if (!unzipArchive.isOpen())
 		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	throwCustomException(unzipArchive.openEntry(fileName.c_str(), false));
-	std::ofstream file;
 	auto ptr = unzipArchive.getContent(false);
 	return ptr;
 }
@@ -97,15 +96,40 @@ std::vector<char> ZlibWrapper::GetRawFile(std::string fileName)
 	if (!unzipArchive.isOpen())
 		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
 	throwCustomException(unzipArchive.openEntry(fileName.c_str(), true));
-	std::ofstream file;
 	auto ptr = unzipArchive.getContent(true);
 	return ptr;
+}
+
+void ZlibWrapper::GetFile(std::string fileName, std::string saveToFile)
+{
+	if (!unzipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
+	throwCustomException(unzipArchive.openEntry(fileName.c_str(), false));
+	std::ofstream file(saveToFile,std::ios_base::out | std::ios_base::binary);
+	unzipArchive.isFileRaw = false;
+	unzipArchive >> file;
+}
+
+void ZlibWrapper::GetRawFile(std::string fileName, std::string saveToFile)
+{
+	if (!unzipArchive.isOpen())
+		throw new ZipNotOpenException("Nie znaleziono otwartego archiwum.");
+	throwCustomException(unzipArchive.openEntry(fileName.c_str(), true));
+	std::ofstream file(saveToFile, std::ios_base::out | std::ios_base::binary);
+	unzipArchive.isFileRaw = true;
+	unzipArchive >> file;
 }
 
 void ZlibWrapper::setProgressBarFunction(std::function<void(long long, long long)> fun)
 {
 	zipArchive.progressBar = fun;
 	unzipArchive.progressBar = fun;
+}
+
+void ZlibWrapper::setBufferSize(long long size)
+{
+	unzipArchive.bufferSize = size;
+	zipArchive.bufferSize = size;
 }
 
 bool ZlibWrapper::fileExist(const std::string& name)

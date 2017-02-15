@@ -6,7 +6,7 @@
 
 namespace akdzlib
 {
-	const unsigned int BUFSIZE = 2048;
+	
 
 	zipper::zipper() :
 		zipFile(nullptr),
@@ -119,15 +119,19 @@ namespace akdzlib
 
 	zipper& zipper::operator<<(std::istream& is)
 	{
-		int err = ZIP_OK;
-		char buf[BUFSIZE];
+		//get size of the file
+		is.seekg(0, std::ios_base::end);
+		int length = is.tellg();
+		is.seekg(0, std::ios_base::beg);
 
+		int err = ZIP_OK;
+		char* buf = new char[bufferSize];
 		if (isOpenEntry())
 		{
 			long read = 0;
 			while (err == ZIP_OK && is.good())
 			{
-				is.read(buf, BUFSIZE);
+				is.read(buf, bufferSize);
 				unsigned int nRead = static_cast<unsigned int>(is.gcount());
 				read += nRead;
 				if (nRead)
@@ -135,9 +139,10 @@ namespace akdzlib
 				else
 					break;
 				if (progressBar != nullptr)
-					progressBar(read, is.tellg());
+					progressBar(read, length);
 			}
 		}
+		delete[] buf;
 		return *this;
 	}
 

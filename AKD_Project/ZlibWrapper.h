@@ -39,13 +39,20 @@ public:
 
 	std::vector<char> GetRawFile(std::string fileName);
 
+	void GetFile(std::string fileName, std::string saveToFile);
+
+	void GetRawFile(std::string fileName, std::string saveToFile);
+
 	void setProgressBarFunction(std::function<void(long long, long long)> fun);
 
-	std::function<void(long long, long long)> progressBar;
+	void setBufferSize(long long size);
+
+	
 private:
 	akdzlib::zipper zipArchive;
 	akdzlib::unzipper unzipArchive;
 	bool _isArchiveOpen;
+	std::function<void(long long, long long)> progressBar;
 
 	static bool fileExist(const std::string& name);
 	static void throwCustomException(int exceptionNumber);

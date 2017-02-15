@@ -29,6 +29,7 @@ namespace akdzlib
 		zipper& operator<<(std::istream& is);
 
 		std::function<void(long, long)> progressBar;
+		unsigned long long bufferSize = 2048;
 	private:
 		static void getTime(tm_zip& tmZip);
 

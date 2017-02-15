@@ -32,6 +32,9 @@ namespace akdzlib
 
 		std::function<void(long, long)> progressBar;
 
+		//only for operator >> to use
+		bool isFileRaw;
+		unsigned long long bufferSize = 2048;
 	private:
 		void readEntries();
 
