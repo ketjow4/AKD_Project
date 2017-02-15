@@ -182,6 +182,7 @@ namespace akdzlib
 						progressBar(read, length);
 				}
 			}
+			delete[] buf;
 			zipCloseFileInZipRaw64(zipFile, uncompressed_size, crc32);
 		}	
 	}
